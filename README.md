@@ -30,3 +30,5 @@ php artisan serve
 cd web
 npm run dev
 ```
+## Question:
+https://docs.google.com/document/d/1HpyfW8fsYWt4ZmqHo0_hWX92SdR3pjK9Uyo9dHZLjUw/edit?usp=sharing
