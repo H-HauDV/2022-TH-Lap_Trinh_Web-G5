@@ -1,0 +1,41 @@
+.card-head .ant-card-head{
+    background-color: #3f6791;
+    border-bottom: none;
+    color: #fff;
+}
+.meta-white .ant-card-meta-title{
+    color: #fff;
+}
+.text-white{
+    color: #fff;
+}
+.same-row{
+    display: flex;
+    flex-direction: row;
+}
+.table-black .ant-table-row{
+    background-color: #343a40;
+}
+.text-white .ant-table-cell {
+    color: #999;
+}
+.text-white .ant-table-cell a{
+    color: #fff;
+}
+.table-black .ant-table-row:hover {
+    color: black;
+    background: #6c757d;
+}
+.text-white .ant-form-item-required{
+    color: #fff;
+}
+.text-white span{
+    color: #fff;
+}
+.login-text-big{
+    text-align: center;
+    color: #fff;
+    font-weight: 900;
+    font-size: 64px;
+    text-transform: uppercase;
+}

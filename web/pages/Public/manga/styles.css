@@ -1,0 +1,45 @@
+.color-red{
+    background-color:red;
+}
+.color-blue{
+    background-color:blue;
+}
+.is-same-row{
+    display: flex;
+    flex-direction: row;
+}
+.text-white{
+    color: white;
+}
+.is-dark-background{
+    background-color: #343a40;
+}
+.is-padding-24{
+    padding: 24px;
+}
+.is-rounded-25rem{
+    border-radius: .25rem;
+}
+.is-margin-24{
+    margin-bottom: 24px;
+}
+.ant-pagination{
+    text-align: center;
+}
+.ant-card-meta-title{
+    color: white;
+}
+.section-header{
+    margin: auto;
+    font-size: 20px;
+    color: #fff;
+    height: 50px;
+    align-content: center;
+    background-color: #364d79;
+}
+.background-color-dark{
+    background-color: #343a40;
+}
+.font-size-15 {
+    font-size: 10px;
+}
