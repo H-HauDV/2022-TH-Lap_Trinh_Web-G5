@@ -4,34 +4,46 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import MainLayout from '../../layouts/MainLayout'
 
-import { List, Card, Avatar, Row, Col, Carousel  } from 'antd';
+import { List, Card, Avatar, Row, Col, Carousel, Tag  } from 'antd';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFire, faNewspaper} from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router'
 const { Meta } = Card;
-
+const { CheckableTag } = Tag;
 function HomePage() {
   const [mangas, setManga] = React.useState([]);
   const [comments, setComment] = React.useState([]);
   const [carousel, setCarousel] = React.useState([]);
   const [isLoading, setLoading] = useState(false); 
+  const [tags, setTags] = React.useState([]);
+  const [selectedTags, setSelectedTags] = React.useState([]);
   const router = useRouter()
   const fetchManga = async () => {
     axios
     .get('http://127.0.0.1:8000/api/mangas/homePage')
     .then((response) => {
-      // console.log(response.data);
       setManga(response.data)
     })
-    console.log(mangas)
-    var more={id:0, name:"", main_image:"/MangaMore.png"}
-
+    ///console.log(mangas)
+    
+  }
+  const fetchTags = async () => {
+    axios
+    .get('http://127.0.0.1:8000/api/tags')
+    .then((response) => {
+        console.log(response.data)
+        setTags(response.data)
+        // console.log(tags)
+    })
+  }
+  const addMoreToMangas=()=>{
+    var more={id:0, name:"", main_image:"/MangaMore.png"} // variable want to add to array
     // mangas.push(more)
-    // setManga([...mangas,more]);
-    var updatedMangasArray = [...mangas, more];
-    setManga(updatedMangasArray);
-    console.log(mangas)
+    setManga([...mangas,JSON.stringify(more)]);
+    // var updatedMangasArray = [...mangas, more];
+    // setManga(updatedMangasArray);
+    // console.log(mangas)
   }
   const getNewComments = async () => {
     axios
@@ -55,17 +67,28 @@ function HomePage() {
     var link="Public/manga?id="+mangaID
     router.push(link)
   }
-  const addSeeAllMangaToList=() => {
-    
-    console.log(mangas)
-  }
   useEffect(() => {
     getNewComments()
     fetchManga()
     initCarosel()
-    // addSeeAllMangaToList()
+    fetchTags()
+    addMoreToMangas()
+    // initSelectedTags()
     
   }, [])
+  const initSelectedTags=()=>{
+    var index = 0;
+    while (index < tags.length){
+      console.log(tags.id)
+      //setSelectedTags([...selectedTags,{ id: tags.id, checked: false}])
+  }
+  }
+  const handleSelectTag=(tag, checked)=> {
+    // console.log(tag, checked)
+    // setSelectedTags([...selectedTags,tag.id]);
+    // console.log(selectedTags)
+
+  }
   return (
     <div id="MainContent">
       <MainLayout>
@@ -159,9 +182,9 @@ function HomePage() {
             </Row>
           </Col>
         <Col className="" span={8} offset={1}>
-          <Row className="" >
+          <Row style={{ paddingBottom: 20,}} className="" >
             <Col className="" span={24}>
-              <Card className="card-head" title="Comment" bordered={false} style={{  backgroundColor: "#343a40", borderRadius: 5,}}>
+              <Card className="card-head" title="Category" bordered={false} style={{  backgroundColor: "#343a40", borderRadius: 5,}}>
               <List
                 itemLayout="horizontal"
                 dataSource={comments}
@@ -174,6 +197,29 @@ function HomePage() {
                       description={<p style={{ color: "#fff"}}>{comment.content}</p>}
                     />
                   </List.Item>
+                )}
+              />
+              </Card>
+            </Col>
+          </Row>
+          <Row className="" >
+            <Col className="" span={24}>
+              <Card className="card-head" title="Category" bordered={false} style={{  backgroundColor: "#343a40", borderRadius: 5,}}>
+              <List
+                itemLayout="horizontal"
+                dataSource={tags}
+                renderItem={tag => (
+                  <List.Item>
+                    <CheckableTag
+                      key={tag}
+                      checked={selectedTags.indexOf(tag) > -1}
+                      onChange={checked => handleSelectTag(tag, checked)}
+                    >
+
+                      {tag.category_name}
+                    </CheckableTag>
+                  </List.Item>
+                  
                 )}
               />
               </Card>
