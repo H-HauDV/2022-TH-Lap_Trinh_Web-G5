@@ -10,27 +10,19 @@ function UserLoginPage() {
   let login_token = null;
   const router = useRouter()
   const onFinish = async (values) => {
-    //const response = await login(values)
-
-    // axios
-    // .post('http://127.0.0.1:8000/api/user/login', values)
-    // .then(response => {
-    //   console.log(response)
-    //   if (response.request.status === 200) {
-    //     console.log("1")
-    //     login_token = response['token'];
-    //   }
-    // });
-    axios({
-      method: 'post',
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      url: 'http://127.0.0.1:8000/api/user/login',
-      data: { user }
-    });
-    router.push("/Public")
-    
+      console.log(values)
+      let result= await fetch("http://127.0.0.1:8000/api/user/login",{
+          method: 'POST',
+          body: JSON.stringify(values),
+          headers: {
+              "Content-Type":"application/json",
+              "Accept": "application/json"
+          }
+      })
+      result= await result.json();
+      console.log(result)
+      localStorage.setItem('user-info',JSON.stringify(result))
+      router.push("/Public")
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -50,7 +42,6 @@ function UserLoginPage() {
             <Form name="basic" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} initialValues={{ remember: false }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}>
-                <meta name="csrf-token" content="{{ csrf_token() }}"/>
                 <Form.Item className="text-white" label="Email" name="email" rules={[{ required: true, message: 'Please input your username!' }]}>
                     <Input />
                 </Form.Item>

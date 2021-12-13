@@ -4,7 +4,6 @@ import Navbar from "../../components/navbar/navbar1";
 import FooterComponent from "../../components/footer";
 import { UserOutlined, LaptopOutlined, NotificationOutlined} from "@ant-design/icons";
 import { Layout, Menu, Button, Dropdown, Avatar } from "antd";
-
 const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
 

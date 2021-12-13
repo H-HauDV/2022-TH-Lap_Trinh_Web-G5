@@ -3,10 +3,9 @@ import React, { useEffect, useState } from "react";
 import props from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Menu, Breadcrumb } from 'antd';
-import MainLayout from '../../layouts/Layout'
+import MainLayout from '../../../layouts/MainLayout'
 import axios from 'axios';
 import { List, Card, Button, Row, Col, Carousel  } from 'antd';
-import "./styles.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFire, faNewspaper} from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router'
@@ -22,26 +21,18 @@ function AllMangaPage() {
   const router = useRouter()
   const fetchManga = async () => {
     axios
-    .get('/api/mangas')
+    .get('http://127.0.0.1:8000/api/manga/get/all/withPagination?page=1')
     .then((response) => {
-      // console.log(response.data);
-      setManga(response.data)
+      //console.log(response.data.data)
+      setManga(response.data.data)
     })
   }
 
   const fetchTotalManga = async () => {
     axios
-    .get('/api/totalManga')
+    .get('http://127.0.0.1:8000/api/manga/total')
     .then((response) => {
       setTotalManga(response.data)
-    })
-  }
-  const initCarosel = async () => {
-    axios
-    .get('/api/mangaCarosel')
-    .then((response) => {
-      // console.log(response)
-      setCarousel(response.data)
     })
   }
   const handleMangaCardClick=(mangaID,mangaName) => {
@@ -53,7 +44,6 @@ function AllMangaPage() {
   useEffect(() => {
     fetchManga()
     fetchTotalManga()
-    initCarosel()
   }, [])
   return (
     <div id="MainContent">
@@ -69,7 +59,7 @@ function AllMangaPage() {
               <List
                 className="is-padding-24 "
                 grid={{ gutter: 36, column: 4 }}
-                dataSource={mangas.slice(0, 11)}
+                dataSource={mangas}
                 
                 renderItem={manga => (
                   <List.Item>
@@ -105,7 +95,3 @@ function AllMangaPage() {
 }
 
 export default AllMangaPage;
-
-if (document.getElementById('AllMangaPage')) {
-  ReactDOM.render(<AllMangaPage />, document.getElementById('AllMangaPage'));
-}

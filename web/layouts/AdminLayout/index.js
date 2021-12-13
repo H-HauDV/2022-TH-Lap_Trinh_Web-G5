@@ -9,7 +9,7 @@ import {
 import { Layout, Menu, Breadcrumb, Dropdown, Avatar } from "antd";
 import Navbar from "../../components/navbar/navbar2";
 import FooterComponent from "../../components/footer";
-import SiderComponent from "../../components/sider";
+import SiderComponent from "../../components/sider/AdminSider";
 
 
 const { SubMenu } = Menu;

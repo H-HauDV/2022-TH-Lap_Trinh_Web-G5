@@ -30,7 +30,7 @@ function AddManga() {
       setTotalManga(response.data)
     })
     axios
-    .get('http://127.0.0.1:8000/api/tags')
+    .get('http://127.0.0.1:8000/api/manga/tags')
     .then((response) => {
         setTags( response.data)
         console.log(tags)

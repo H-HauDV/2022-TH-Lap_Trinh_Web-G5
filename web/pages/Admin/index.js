@@ -23,7 +23,7 @@ function AdminPage() {
   }
   const fetchTotalManga = async () => {
     axios
-    .get('http://127.0.0.1:8000/api/totalManga')
+    .get('http://127.0.0.1:8000/api/manga/total')
     .then((response) => {
       setTotalManga(response.data)
     })

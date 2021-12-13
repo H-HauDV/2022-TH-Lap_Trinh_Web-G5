@@ -82,10 +82,10 @@ function MangaPage() {
   }
   const fetchData = async () => {
     const querries = parseUrlQuery(window.location);
-    var apiLinkForManga="http://127.0.0.1:8000/api/manga/"+querries.id[0]
+    var apiLinkForManga="http://127.0.0.1:8000/api/manga/get/mangaInfor/fromID/"+querries.id[0]
     var apiLinkForTag="http://127.0.0.1:8000/api/mangaTags/"+querries.id[0]
     var apiLinkForViewCount="http://127.0.0.1:8000/api/mangaViewCount/"+querries.id[0]
-    var apiLinkForChapters="http://127.0.0.1:8000/api/mangaChapterList/"+querries.id[0]
+    var apiLinkForChapters="http://127.0.0.1:8000/api/manga/get/chapterList/"+querries.id[0]
     axios
     .get(apiLinkForManga)
     .then((response1) => {

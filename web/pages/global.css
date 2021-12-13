@@ -39,3 +39,16 @@
     font-size: 64px;
     text-transform: uppercase;
 }
+.user-profile-card .ant-card-body{
+    background-color: #343a40;
+    
+}
+.user-profile-card .ant-card-body .ant-card-meta-title{
+    color: #fff;
+}
+.user-profile-card .ant-card-body .ant-card-meta-description{
+    color: #fff;
+}
+.category-list .ant-tag-checkable{
+    color: #fff;
+}

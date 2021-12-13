@@ -42,7 +42,7 @@ class MangaController extends Controller
         return DB::select("SELECT * from category");
     }
     public function checkMangaName($mangaName){
-        $isExist=  Manga::where('name', '=', $mangaName)->first();;
+        $isExist=  Manga::where('name', '=', $mangaName)->first();
         if ($isExist === null) {
             // Manga does not exist
             return 0;
@@ -51,5 +51,51 @@ class MangaController extends Controller
             return 1;
           }
     }
+    public function getNextChapter($chapterID){
+        $mangaIDArray= DB::select("SELECT manga_id from chapter_manga where  chapter_id= $chapterID ");
+        if($mangaIDArray==null) return response()->json(['message' => 'Chapter ID is incorrect'], 100);
+        $mangaID= intval(implode(',', array_column($mangaIDArray, 'manga_id')));
+        $nextChapterIDPlot=intval($chapterID)+1;
+        $nextChapterIDArray= DB::select("SELECT chapter_id from chapter_manga where  manga_id= $mangaID and chapter_id= $nextChapterIDPlot Limit 1");
+        if($nextChapterIDArray==null) return response()->json(['message' => 'No next chapter'], 400);
+        $nextChapterID= intval(implode(',', array_column($nextChapterIDArray, 'chapter_id')));
+        return $nextChapterID;
+    }
+    public function getPrevChapter($chapterID){
+        $mangaIDArray= DB::select("SELECT manga_id from chapter_manga where  chapter_id= $chapterID ");
+        if($mangaIDArray==null) return response()->json(['message' => 'Chapter ID is incorrect'], 100);
+        $mangaID= intval(implode(',', array_column($mangaIDArray, 'manga_id')));
+        $prevChapterIDPlot=intval($chapterID)-1;
+        $prevChapterIDArray= DB::select("SELECT chapter_id from chapter_manga where  manga_id= $mangaID and chapter_id= $prevChapterIDPlot Limit 1");
+        if($prevChapterIDArray==null) return response()->json(['message' => 'No previous chapter'], 400);
+        $prevChapterID= intval(implode(',', array_column($prevChapterIDArray, 'chapter_id')));
+        return $prevChapterID;
+    }
+    public function getMangaNameFromChapterID($chapterID){
+        $manga=  DB::select("SELECT distinct mangas.name as mangaName, mangas.id as id from chapter_manga, mangas 
+        where  chapter_manga.manga_id= mangas.id and chapter_manga.chapter_id=$chapterID ");
+        if ($manga === null) {
+            // Manga does not exist
+            return response()->json(['message' =>  "Manga does not exist"],  400);
+          } else {
+            // Manga exits
+            return $manga[0];
+          }
+    }
+    public function getSearchSuggestionFromName($mangaName){
+        $manga=  DB::select("SELECT mangas.name as mangaName from mangas 
+        where  mangas.name LIKE '%$mangaName%'");
+        if ($manga === null) {
+            // Manga does not exist
+            return response()->json(['message' =>  "Manga does not exist"],  400);
+          } else {
+            // Manga exits
+            return $manga;
+          }
+    }
+    public function getAllMangaWithPagination(){
+        return Manga::orderBy('id', 'asc')->paginate(12);
+    }
+    
 }
 

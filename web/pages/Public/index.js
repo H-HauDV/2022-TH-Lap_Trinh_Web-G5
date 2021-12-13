@@ -18,32 +18,31 @@ function HomePage() {
   const [isLoading, setLoading] = useState(false); 
   const [tags, setTags] = React.useState([]);
   const [selectedTags, setSelectedTags] = React.useState([]);
+  const [idOfLastCarousel, setIdOfLastCarousel] = React.useState();
   const router = useRouter()
   const fetchManga = async () => {
     axios
-    .get('http://127.0.0.1:8000/api/mangas/homePage')
+    .get('http://127.0.0.1:8000/api/manga/homePage')
     .then((response) => {
-      setManga(response.data)
+      // console.log(response.data)
+      setIdOfLastCarousel(response.data[response.data.length-1].id)
+      var more={id:0, name:"", main_image:"/MangaMore.png"} // variable want to add to array
+      var updatedMangasArray = [...response.data, more];
+      console.log(updatedMangasArray)
+      setManga(updatedMangasArray)
     })
-    ///console.log(mangas)
+
+    // console.log(mangas)
     
   }
   const fetchTags = async () => {
     axios
-    .get('http://127.0.0.1:8000/api/tags')
+    .get('http://127.0.0.1:8000/api/manga/tags')
     .then((response) => {
-        console.log(response.data)
+        //console.log(response.data)
         setTags(response.data)
         // console.log(tags)
     })
-  }
-  const addMoreToMangas=()=>{
-    var more={id:0, name:"", main_image:"/MangaMore.png"} // variable want to add to array
-    // mangas.push(more)
-    setManga([...mangas,JSON.stringify(more)]);
-    // var updatedMangasArray = [...mangas, more];
-    // setManga(updatedMangasArray);
-    // console.log(mangas)
   }
   const getNewComments = async () => {
     axios
@@ -55,26 +54,24 @@ function HomePage() {
   }
   const initCarosel = async () => {
     axios
-    .get('http://127.0.0.1:8000/api/mangaCarosel')
+    .get('http://127.0.0.1:8000/api/manga/carousel')
     .then((response) => {
       // console.log(response)
       setCarousel(response.data)
     })
   }
   const handleMangaCardClick=(mangaID,mangaName) => {
-    console.log(mangaID)
-    console.log(mangas)
-    var link="Public/manga?id="+mangaID
-    router.push(link)
+    if(mangaID==0) router.push("Public/all-manga")
+    else{
+      var link="Public/manga?id="+mangaID
+      router.push(link)
+    }
   }
   useEffect(() => {
     getNewComments()
     fetchManga()
     initCarosel()
     fetchTags()
-    addMoreToMangas()
-    // initSelectedTags()
-    
   }, [])
   const initSelectedTags=()=>{
     var index = 0;
@@ -166,15 +163,16 @@ function HomePage() {
                         cover={<img width={140} height={200} alt="example" src={manga.main_image} />}
                         key={manga.id}
                         onClick={() => {
-                          handleMangaCardClick(manga.id,manga.name)
+                        handleMangaCardClick(manga.id,manga.name)
                         }}
                       >
                         <Meta 
                           className="meta-white" 
                           title={manga.name} 
-                          />
+                        />
                       </Card>
                     </List.Item>
+                    
                   )}
                 />
                 </Card>
@@ -206,6 +204,7 @@ function HomePage() {
             <Col className="" span={24}>
               <Card className="card-head" title="Category" bordered={false} style={{  backgroundColor: "#343a40", borderRadius: 5,}}>
               <List
+                className="category-list"
                 itemLayout="horizontal"
                 dataSource={tags}
                 renderItem={tag => (

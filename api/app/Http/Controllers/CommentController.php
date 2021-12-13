@@ -10,8 +10,13 @@ use App\Models\Manga_category;
 class CommentController extends Controller
 {
     public function newest(){
-        return  DB::select("SELECT mangas.name as manga_name, users.name as user_name, content from comment, mangas, users 
-        where comment.manga_id=mangas.id and comment.user_id=users.id
+        return  DB::select("SELECT mangas.name as manga_name, users.name as user_name, content from comment, mangas, chapter_manga, users 
+        where comment.chapter_id=chapter_manga.chapter_id and comment.user_id=users.id and chapter_manga.manga_id=mangas.id
+        ORDER BY comment.created_at ASC");
+    }
+    public function getCommentOfChapter($chapterID){
+        return  DB::select("SELECT users.name as user_name, content from comment, chapter_manga, users 
+        where comment.chapter_id=chapter_manga.chapter_id and comment.user_id=users.id and comment.chapter_id=$chapterID
         ORDER BY comment.created_at ASC");
     }
 }

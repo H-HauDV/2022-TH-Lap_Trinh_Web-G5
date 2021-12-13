@@ -9,22 +9,44 @@ import { useRouter } from 'next/router'
 
 function UserRegisterPage() {
   let login_token = null
+  const [emailValidateStatus, setEmailValidateStatus] = useState(""); 
+  const [emailHelpMessage, setEmailHelpMessage]=useState(""); 
   const router = useRouter()
   const onFinish = async (values) => {
-    console.log(values)
-    let result= await fetch("http://127.0.0.1:8000/api/user/register",{
-        method: 'POST',
-        body: JSON.stringify(values),
-        headers: {
-            "Content-Type":"application/json",
-            "Accept": "application/json"
-        }
-    })
-    result= await result.json();
-    localStorage.setItem('user-info',JSON.stringify(result))
-    router.push("/Public")
+    if(emailValidateStatus=="success"){
+      console.log(values)
+      let result= await fetch("http://127.0.0.1:8000/api/user/register",{
+          method: 'POST',
+          body: JSON.stringify(values),
+          headers: {
+              "Content-Type":"application/json",
+              "Accept": "application/json"
+          }
+      })
+      result= await result.json();
+      localStorage.setItem('user-info',JSON.stringify(result))
+      router.push("/Public")
+    }else{
+      console.log("false")
+    }
   };
+  function checkEmailExist(e){
+    var checkLink="http://127.0.0.1:8000/api/user/checkEmailDuplication/"+e.target.value
+    axios
+    .get(checkLink)
+    .then((response) => {
+        console.log( response.data)
+        if(response.data==0){
+          setEmailValidateStatus("success")
+          setEmailHelpMessage("")
+        }else{
+          setEmailValidateStatus("error")
+          setEmailHelpMessage("Email already taken")
+        }
+    }).catch(error=>{
 
+    })
+  }
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
@@ -42,8 +64,11 @@ function UserRegisterPage() {
             <Form name="basic" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} initialValues={{ remember: false }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}>
-                <Form.Item className="text-white" label="Email" name="email" rules={[{ required: true, message: 'Please input your username!' }]}>
-                    <Input />
+                  
+                <Form.Item validateStatus={emailValidateStatus}
+                          help={emailHelpMessage}
+                className="text-white" label="Email" name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
+                    <Input onChange={checkEmailExist}/>
                 </Form.Item>
 
                 <Form.Item className="text-white" label="Password" name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
