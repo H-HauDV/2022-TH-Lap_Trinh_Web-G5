@@ -57,5 +57,3 @@ Route::get('/user/getInfoByID/basic/{id}', [UserController::class, 'getBasicInfo
 Route::get('/user/getInfoByID/advanced/{id}', [UserController::class, 'getAdvancedInfoFromID']);
 Route::get('/user/getInfoByID/changeable/{id}', [UserController::class, 'getChangeableInfoFromID']);
 
-
-Route::get('/photo', [PhotoController::class, 'newest']);
