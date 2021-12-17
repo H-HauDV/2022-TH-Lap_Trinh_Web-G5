@@ -182,7 +182,7 @@ function HomePage() {
         <Col className="" span={8} offset={1}>
           <Row style={{ paddingBottom: 20,}} className="" >
             <Col className="" span={24}>
-              <Card className="card-head" title="Category" bordered={false} style={{  backgroundColor: "#343a40", borderRadius: 5,}}>
+              <Card className="card-head" title="Comment" bordered={false} style={{  backgroundColor: "#343a40", borderRadius: 5,}}>
               <List
                 itemLayout="horizontal"
                 dataSource={comments}

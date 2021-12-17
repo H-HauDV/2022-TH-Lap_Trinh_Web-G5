@@ -23,7 +23,7 @@ function SiderComponent() {
     }
     const fetchUserData = async () => {
         var userFromLocal=JSON.parse(localStorage.getItem('user-info'))
-        console.log(userFromLocal.id)
+        //console.log(userFromLocal.id)
         var apiLinkForUserInfo="http://127.0.0.1:8000/api/user/getInfoByID/basic/"+userFromLocal.id
         axios
         .get(apiLinkForUserInfo)

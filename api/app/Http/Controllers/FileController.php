@@ -10,8 +10,9 @@ class FileController extends Controller{
 
         // $result=$request->file('files')->store('uploads');
         // return ["result"=> $result];
-        return $request;
-
+       // return $request->chapters;
+        return "a";
+        //Storage::put('avatars/1', $request);
 
         
     }

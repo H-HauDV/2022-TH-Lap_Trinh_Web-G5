@@ -12,6 +12,7 @@ function Navbar() {
     const [userLogin, setUserLogin] =useState(false)
     const [searchOption, setSearchOption] = useState([])
     const router = useRouter()
+    const { Option } = AutoComplete
     const fetchBasicUserData = async () => {
       try{
         var userFromLocal=JSON.parse(localStorage.getItem('user-info'))
@@ -36,33 +37,40 @@ function Navbar() {
       console.log('logout')
       router.reload(window.location.pathname)
     }
-    function convertUnicode(input) {
-      return input.replace(/\\u[0-9a-fA-F]{4}/g,function(a,b) {
-        var charcode = parseInt(b,16);
-        return String.fromCharCode(charcode);
-      });
-    }
     const onSearchInput = (searchText) => {
-      console.log(searchText)
+      // console.log(searchText)
+      if(searchText!=null){
       var apiLinkForSearchSuggestion="http://127.0.0.1:8000/api/manga/search/suggestion/fromName/"+searchText
+      console.log(apiLinkForSearchSuggestion)
         axios
         .get(apiLinkForSearchSuggestion)
         .then((response) => {
           // console.log(response.data)
-          setSearchOption()
+          // setSearchOption()
           let searchOptionTemp=new Array()
           for(var i=0; i<response.data.length; i++){
-            console.log(response.data[i].mangaName)
-            searchOptionTemp.push(convertUnicode(response.data[i].mangaName))
+            //console.log(response.data[i].mangaName)
+            searchOptionTemp.push(response.data[i].mangaName)
           }
-          console.log(searchOptionTemp)
+
           setSearchOption(searchOptionTemp)
           console.log(searchOption)
         })
-      
+      }else{
+
+      }
     };
+
     const onSearchSelect = (data) => {
-      console.log('onSelect', data);
+      var mangaID=0
+      var apiLinkForGetMangaID="http://127.0.0.1:8000/api/manga/get/mangaID/fromName/"+data
+      axios
+      .get(apiLinkForGetMangaID)
+      .then((response) => {
+        mangaID=response.data.id
+        var link="/Public/manga?id="+mangaID
+        router.push(link)
+      })
     };
     useEffect(() => {
       fetchBasicUserData()
@@ -79,12 +87,19 @@ function Navbar() {
         </Menu.Item>
         <Menu.Item style={{ marginLeft: 'auto' }} key='2'>
           <AutoComplete
-          options={searchOption}
-          style={{ width: 200 }}
-          onSelect={onSearchSelect}
-          onSearch={onSearchInput}
-          placeholder="Search"
-        />
+            style={{
+              width: 200,
+            }}
+            onSearch={onSearchInput}
+            onSelect={onSearchSelect}
+            placeholder="input here"
+          >
+            {searchOption.map((option) => (
+              <Option key={option} value={option}>
+                {option}
+              </Option>
+            ))}
+          </AutoComplete>
         </Menu.Item>
         
           {

@@ -6,6 +6,9 @@ use App\Http\Controllers\MangaController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\PhotoController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,8 +27,9 @@ Route::get('/manga/carousel', [MangaController::class, 'getCarosel']);
 Route::get('/manga/tags', [MangaController::class, 'getAllTags']);
 Route::get('/manga/total', [MangaController::class, 'total']);
 Route::get('/manga/homePage', [MangaController::class, 'getMangaForHomePage']);
-Route::get('/manga/get/all/withPagination/', [MangaController::class, 'getAllMangaWithPagination']);
+Route::get('/manga/get/all/', [MangaController::class, 'getAllManga']);
 Route::get('/manga/get/mangaInfor/fromID/{id}', [MangaController::class, 'getFromID']);
+Route::get('/manga/get/mangaID/fromName/{name}', [MangaController::class, 'getMangaIDFromMangaName']);
 
 Route::get('/manga/get/mangaName/fromChapterID/{id}', [MangaController::class, 'getMangaNameFromChapterID']);
 Route::get('/manga/search/suggestion/fromName/{mangaName}', [MangaController::class, 'getSearchSuggestionFromName']);
@@ -39,9 +43,11 @@ Route::get('/getPrevChapter/{chapterID}', [MangaController::class, 'getPrevChapt
 
 Route::get('/comments/new', [CommentController::class, 'newest']);
 Route::get('/comments/chapter/{id}', [CommentController::class, 'getCommentOfChapter']);
+Route::get('/comments/manga/{id}', [CommentController::class, 'getCommentOfManga']);
+
 
 Route::get('/checkManga/name/{mangaName}', [MangaController::class, 'checkMangaName']);
-Route::post('/uploadFile', [FileController::class, 'uploadChapter']);
+Route::post('/upload/file/chapters', [FileController::class, 'uploadChapter']);
 Route::post('/user/login', [UserController::class, 'login']);
 Route::post('/user/register', [UserController::class, 'register']);
 Route::get('/user/checkEmailDuplication/{email}', [UserController::class, 'checkUserEmailExistance']);
@@ -50,3 +56,6 @@ Route::get('/user/getInfoByID/basic/{id}', [UserController::class, 'getBasicInfo
 
 Route::get('/user/getInfoByID/advanced/{id}', [UserController::class, 'getAdvancedInfoFromID']);
 Route::get('/user/getInfoByID/changeable/{id}', [UserController::class, 'getChangeableInfoFromID']);
+
+
+Route::get('/photo', [PhotoController::class, 'newest']);

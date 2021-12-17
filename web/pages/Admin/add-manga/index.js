@@ -20,12 +20,13 @@ function AddManga() {
   const [mangaNameValidateStatus, setMangaNameValidateStatus] = useState(""); 
   const [totalManga, setTotalManga] = React.useState();
   const [tags, setTags] = React.useState([]);
+  const [selectedFiles,setSelectedFiles]=React.useState([]);
   function test(){
     console.log(mangas)
   }
   const fetchTotalManga = async () => {
     axios
-    .get('http://127.0.0.1:8000/api/totalManga')
+    .get('http://127.0.0.1:8000/api/manga/total')
     .then((response) => {
       setTotalManga(response.data)
     })
@@ -33,22 +34,30 @@ function AddManga() {
     .get('http://127.0.0.1:8000/api/manga/tags')
     .then((response) => {
         setTags( response.data)
-        console.log(tags)
+        //console.log(tags)
     })
   }
   const initCategoryOption = tags.map((tag) =>  <Option key={tag.id}>{tag.category_name}</Option>);
   useEffect(() => {
     fetchTotalManga()
   }, [])
-
+  const handleImageChange =(e) =>{
+    setSelectedFiles([]);
+    if(e.target.files){
+      const filesArray=Array.from(e.target.file).map((file)=>URL.createObjectURL(file))
+      setSelectedFiles((prevImages)=>prevImages.concat(filesArray))
+      Array.from(e.target.file).map(
+        (file)=>URL.revokeObjectURL(file)
+      );
+    }
+  }
   const onFinish = (values) => {
-    console.log(values);
-    // axios.post('/api/uploadFile/'+values.chapters[0])
+    console.log(values.chapters);
     fetch(
-			'http://127.0.0.1:8000/api/uploadFile',
+			'http://127.0.0.1:8000/api/upload/file/chapters',
 			{
 				method: 'POST',
-				body: values.chapters[0],
+				body: values.chapters,
 			}
 		)
     .then((result) => {
@@ -96,6 +105,7 @@ function AddManga() {
                     wrapperCol={{ span: 20 }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
+                    encType="multipart/form-data"
                     >
                     <Form.Item label="Manga name" name="mangaName" 
                         validateStatus={mangaNameValidateStatus} 
@@ -132,7 +142,7 @@ function AddManga() {
                     </Form.Item>
                     <Form.Item label="Chapter">
                       <Form.Item name="chapters" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-                        <Upload.Dragger name="files" action="/upload.do">
+                        <Upload.Dragger type="file" name="file" id="file" multiple onChange={handleImageChange}>
                           <p className="ant-upload-drag-icon">
                             <InboxOutlined />
                           </p>

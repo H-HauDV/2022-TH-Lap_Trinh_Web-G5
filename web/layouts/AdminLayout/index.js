@@ -38,7 +38,6 @@ function MainLayout({children}) {
                     ><main>{children}</main></Content>
                 </Layout>
             </Layout>
-            <FooterComponent/>
         </Layout>
     );
 }

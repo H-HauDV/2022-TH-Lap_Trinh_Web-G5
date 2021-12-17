@@ -8,7 +8,6 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu, Breadcrumb, Dropdown, Avatar } from "antd";
 import Navbar from "../../components/navbar/navbar1";
-import FooterComponent from "../../components/footer";
 import SiderComponent from "../../components/sider/UserSider";
 
 
@@ -17,7 +16,7 @@ const { Content, Sider } = Layout;
 
 function UserLayout({children}) {
     return (
-            <Layout style={{height:"100vh"}}> 
+            <Layout style={{minHeight:"100vh"}}> 
             <SiderComponent/>
                 <Layout className="gray-layout-content" style={{ padding: "0", backgroundColor: "#454d55", }}>
                     <Navbar />
@@ -30,8 +29,6 @@ function UserLayout({children}) {
                         }}
                     ><main>{children}</main></Content>
                 </Layout>
-                
-            
         </Layout>
     );
 }

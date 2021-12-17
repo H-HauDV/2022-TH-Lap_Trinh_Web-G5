@@ -93,8 +93,11 @@ class MangaController extends Controller
             return $manga;
           }
     }
-    public function getAllMangaWithPagination(){
-        return Manga::orderBy('id', 'asc')->paginate(12);
+    public function getAllManga(){
+        return Manga::orderBy('id', 'asc')->get();
+    }
+    public function getMangaIDFromMangaName($name){
+        return Manga::select('id')->where('name', $name)->first();
     }
     
 }
