@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Manga;
 use App\Models\Category;
 use App\Models\Manga_category;
+use App\Models\ChapterManga;
 
 class MangaController extends Controller
 {
@@ -99,6 +100,10 @@ class MangaController extends Controller
     public function getMangaIDFromMangaName($name){
         return Manga::select('id')->where('name', $name)->first();
     }
+    public function updateViewForChapterWithID($id){
+        DB::table('chapter_manga')->where('chapter_id', $id)->increment('view');
+    }
+    
     
 }
 

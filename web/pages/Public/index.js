@@ -24,7 +24,7 @@ function HomePage() {
     axios
     .get('http://127.0.0.1:8000/api/manga/homePage')
     .then((response) => {
-      // console.log(response.data)
+      //console.log(response.data)
       setIdOfLastCarousel(response.data[response.data.length-1].id)
       var more={id:0, name:"", main_image:"/MangaMore.png"} // variable want to add to array
       var updatedMangasArray = [...response.data, more];

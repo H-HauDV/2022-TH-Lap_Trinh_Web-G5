@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import MainLayout from "../../../layouts/MainLayout";
-import AllComment from "../../../components/comments/all";
-
+import dynamic from 'next/dynamic'
+import Loading from "../../../components/loading"
+const MangaComments = dynamic(() => import('../../../components/comments/manga'))
 import {
   List,
   Card,
@@ -38,7 +39,7 @@ function MangaPage() {
   const [viewCount, setViewCount] = React.useState([]);
   const [comments, setComment] = React.useState([]);
   const [chapter, setChapter] = React.useState([]);
-  const [isLoading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const columns = [
     {
@@ -89,46 +90,25 @@ function MangaPage() {
     return moment.utc(date).local().startOf("seconds").fromNow();
   };
   const openChapterPage = (chapterName) => {
-    console.log("getting");
-    var link = "";
+    
+    //console.log("getting");
+    var chapterID = 0;
     chapter.map((aChapter) => {
       if (aChapter.chapter_name == chapterName)
-        link = "/Public/chapter?id=" + aChapter.chapter_id;
+        chapterID=aChapter.chapter_id; 
     });
-    router.push(link);
+    var chapterLink = "/Public/chapter?id=" + chapterID;
+    var apiLinkForUpdateView ="http://127.0.0.1:8000/api/chapter/update/view/" +chapterID;
+    console.log(apiLinkForUpdateView)
+    fetch(apiLinkForUpdateView, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    router.push(chapterLink);
   };
-  const fetchData = async () => {
-    const querries = parseUrlQuery(window.location);
-    var apiLinkForManga =
-      "http://127.0.0.1:8000/api/manga/get/mangaInfor/fromID/" + querries.id[0];
-    var apiLinkForTag = "http://127.0.0.1:8000/api/mangaTags/" + querries.id[0];
-    var apiLinkForViewCount =
-      "http://127.0.0.1:8000/api/mangaViewCount/" + querries.id[0];
-    var apiLinkForChapters =
-      "http://127.0.0.1:8000/api/manga/get/chapterList/" + querries.id[0];
-    axios.get(apiLinkForManga).then((response1) => {
-      console.log(response1.data);
-      setManga(response1.data);
-    });
-    axios.get(apiLinkForTag).then((response2) => {
-      console.log(response2.data);
-      setTag(response2.data);
-    });
-    axios.get(apiLinkForViewCount).then((response3) => {
-      console.log(response3.data[0].count);
-      setViewCount(response3.data[0].count);
-    });
-    axios.get(apiLinkForChapters).then((response4) => {
-      console.log(response4.data);
-      setChapter(response4.data);
-    });
-  };
-  const getNewComments = async () => {
-    axios.get("http://127.0.0.1:8000/api/comments/new").then((response) => {
-      // console.log(response.data);
-      setComment(response.data);
-    });
-  };
+  
   const parseUrlQuery = (value) => {
     var urlParams = new URL(value).searchParams;
     return Array.from(urlParams.keys()).reduce((acc, key) => {
@@ -136,13 +116,47 @@ function MangaPage() {
       return acc;
     }, {});
   };
-  function test() {
-    console.log(mangas);
-  }
+
   useEffect(() => {
+    const fetchData = async () => {
+      const querries = parseUrlQuery(window.location);
+      var apiLinkForManga =
+        "http://127.0.0.1:8000/api/manga/get/mangaInfor/fromID/" + querries.id[0];
+      var apiLinkForTag = "http://127.0.0.1:8000/api/mangaTags/" + querries.id[0];
+      var apiLinkForViewCount =
+        "http://127.0.0.1:8000/api/mangaViewCount/" + querries.id[0];
+      var apiLinkForChapters =
+        "http://127.0.0.1:8000/api/manga/get/chapterList/" + querries.id[0];
+      axios.get(apiLinkForManga).then((response1) => {
+        console.log(response1.data);
+        setManga(response1.data);
+      });
+      axios.get(apiLinkForTag).then((response2) => {
+        //console.log(response2.data);
+        setTag(response2.data);
+      });
+      axios.get(apiLinkForViewCount).then((response3) => {
+        //console.log(response3.data[0].count);
+        setViewCount(response3.data[0].count);
+      });
+      axios.get(apiLinkForChapters).then((response4) => {
+        //console.log(response4.data);
+        setChapter(response4.data);
+      });
+    };
+    const getNewComments = async () => {
+      axios.get("http://127.0.0.1:8000/api/comments/new").then((response) => {
+        // console.log(response.data);
+        setComment(response.data);
+        setLoading(false)
+      });
+    };
     fetchData();
     getNewComments();
   }, []);
+  if (loading) {
+    return <Loading></Loading>
+  }
   return (
     <div id="MainContent">
       <MainLayout>
@@ -166,7 +180,7 @@ function MangaPage() {
                 <Rate disabled defaultValue={2} />
               </Col>
               <Col className="" span={14} offset={2}>
-                <h2 className="text-white" text-white>
+                <h2 className="text-white">
                   {manga.name}
                 </h2>
                 <div
@@ -308,7 +322,7 @@ function MangaPage() {
             </Card>
           </Col>
           <Col className="" span={8} offset={1}>
-            <AllComment></AllComment>
+            <MangaComments mangaID={manga.id}></MangaComments>
           </Col>
         </Row>
       </MainLayout>

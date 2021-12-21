@@ -22,7 +22,7 @@ class CommentController extends Controller
     public function getCommentOfManga($mangaID){
         return  DB::select("SELECT users.name as user_name, content from comment, chapter_manga, users ,mangas
         where comment.chapter_id=chapter_manga.chapter_id and comment.user_id=users.id and chapter_manga.manga_id=mangas.id
-        and comment.chapter_id=$mangaID
+        and chapter_manga.manga_id=$mangaID
         ORDER BY comment.created_at ASC");
     }
 }

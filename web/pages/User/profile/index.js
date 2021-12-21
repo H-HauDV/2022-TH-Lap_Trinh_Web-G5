@@ -16,7 +16,7 @@ import { useRouter } from 'next/router'
 const { Meta } = Card;
 
 function UserProfilePage() {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [user, setUser] = useState([]); 
   const router = useRouter()
   const [activeCardTabKey, setActiveCardTabKey] = useState('updateInformation');
@@ -30,8 +30,8 @@ function UserProfilePage() {
       tab: 'Change Password',
     },
   ]
-  const CardContentListForm = {
-    updateInformation: <><UserInfoForm userInfor={user}></UserInfoForm></>,
+  let CardContentListForm = {
+    updateInformation: <UserInfoForm userInfor={user} loading={loading}></UserInfoForm>,
     changePassword: <><UserPasswordForm></UserPasswordForm></>,
   };
   const onCardTabChange = key => {
@@ -40,7 +40,6 @@ function UserProfilePage() {
   const checkAuth=()=>{
   }
   const fetchData = async () => {
-    setLoading(true)
     var userFromLocal=JSON.parse(localStorage.getItem('user-info'))
     // // console.log(userFromLocal.id)
     var apiLinkForUserInfo="http://127.0.0.1:8000/api/user/getInfoByID/advanced/"+userFromLocal.id
@@ -49,7 +48,6 @@ function UserProfilePage() {
     .then((response) => {
       const inforTemp=response.data
       setUser(inforTemp)
-      setLoading(false)
     })
   }
   function formatDate(date){
@@ -60,15 +58,14 @@ function UserProfilePage() {
   useEffect(() => {
     checkAuth()
     fetchData()
+    setLoading(false)
   }, [])
+  if (loading) {
+    return <Loading loading={loading} overlay={loading}></Loading>;
+  }
   return (
     <div id="MainContent">
       <UserLayout>
-      {loading ? (
-            <div className="flex flex-wrap content-center">
-              <Loading loading={loading} overlay={loading} />
-            </div>
-          ) : (
         <Row className="" style={{ marginTop: 20 }}>
             <Col span={24} >
               <Row>
@@ -128,7 +125,7 @@ function UserProfilePage() {
                 </Col>
               </Row>
             </Col>
-        </Row>)}
+        </Row>
       </UserLayout>
     </div>
     

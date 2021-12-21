@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
+import moment from 'moment';
 import props from "prop-types";
 import ReactDOM from "react-dom";
-import { Menu, Breadcrumb } from "antd";
 import MainLayout from "../../../layouts/MainLayout";
 import axios from "axios";
 import {
+  Breadcrumb,
+  Menu,
+  Form,
+  Input,
+  Comment,
+  Avatar,
   List,
   Card,
   Image,
@@ -52,8 +58,8 @@ function ChapterPage() {
       "http://127.0.0.1:8000/api/manga/get/mangaName/fromChapterID/" +
       querries.id[0];
     axios.get(apiLinkForMangaInfor).then((response) => {
-      setManga(response.data)
-      console.log(response.data)
+      setManga(response.data);
+      console.log(response.data);
     });
   };
   const getPrevNextChapter = async () => {
@@ -182,6 +188,7 @@ function ChapterPage() {
                   </List.Item>
                 )}
               />
+
             </Card>
           </Col>
         </Row>

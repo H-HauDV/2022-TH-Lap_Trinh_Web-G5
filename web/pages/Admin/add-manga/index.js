@@ -41,31 +41,22 @@ function AddManga() {
   useEffect(() => {
     fetchTotalManga()
   }, [])
-  const handleImageChange =(e) =>{
-    setSelectedFiles([]);
-    if(e.target.files){
-      const filesArray=Array.from(e.target.file).map((file)=>URL.createObjectURL(file))
-      setSelectedFiles((prevImages)=>prevImages.concat(filesArray))
-      Array.from(e.target.file).map(
-        (file)=>URL.revokeObjectURL(file)
-      );
-    }
-  }
+  
   const onFinish = (values) => {
     console.log(values.chapters);
-    fetch(
-			'http://127.0.0.1:8000/api/upload/file/chapters',
-			{
-				method: 'POST',
-				body: values.chapters,
-			}
-		)
-    .then((result) => {
-      console.log('Success:', result);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+    // fetch(
+		// 	'http://127.0.0.1:8000/api/upload/file/chapters',
+		// 	{
+		// 		method: 'POST',
+		// 		body: values.chapters,
+		// 	}
+		// )
+    // .then((result) => {
+    //   console.log('Success:', result);
+    // })
+    // .catch((error) => {
+    //   console.error('Error:', error);
+    // });
   };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -142,7 +133,7 @@ function AddManga() {
                     </Form.Item>
                     <Form.Item label="Chapter">
                       <Form.Item name="chapters" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-                        <Upload.Dragger type="file" name="file" id="file" multiple onChange={handleImageChange}>
+                        <Upload.Dragger type="file" name="file" id="file" multiple >
                           <p className="ant-upload-drag-icon">
                             <InboxOutlined />
                           </p>
