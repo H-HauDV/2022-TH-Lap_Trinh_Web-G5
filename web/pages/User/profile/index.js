@@ -30,8 +30,8 @@ function UserProfilePage() {
       tab: 'Change Password',
     },
   ]
-  let CardContentListForm = {
-    updateInformation: <UserInfoForm userInfor={user} loading={loading}></UserInfoForm>,
+  const CardContentListForm = {
+    updateInformation: <>{loading? <Loading loading={loading} overlay={loading}></Loading>:<UserInfoForm userInfor={user}></UserInfoForm>}</>,
     changePassword: <><UserPasswordForm></UserPasswordForm></>,
   };
   const onCardTabChange = key => {
@@ -58,6 +58,7 @@ function UserProfilePage() {
   useEffect(() => {
     checkAuth()
     fetchData()
+    
     setLoading(false)
   }, [])
   if (loading) {

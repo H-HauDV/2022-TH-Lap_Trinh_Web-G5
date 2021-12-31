@@ -51,4 +51,17 @@ class UserController extends Controller
     {
         return User::select('name','fullName','gender', 'email','address','selfDescription')->where('id', $id)->first();
     }
+    public function updateUserInfor(Request $request)
+    {
+        $user = User::find( $request->id);
+        $user->name = $request->username;
+        $user->fullName = $request->fullname;
+        $user->gender = $request->gender;
+        $user->address = $request->location;
+        $user->selfDescription = $request->description;
+
+        $user->save();
+
+
+    }
 }
