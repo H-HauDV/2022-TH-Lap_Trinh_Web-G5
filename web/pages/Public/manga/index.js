@@ -99,13 +99,25 @@ function MangaPage() {
     });
     var chapterLink = "/Public/chapter?id=" + chapterID;
     var apiLinkForUpdateView ="http://127.0.0.1:8000/api/chapter/update/view/" +chapterID;
-    console.log(apiLinkForUpdateView)
+    //console.log(apiLinkForUpdateView)
     fetch(apiLinkForUpdateView, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
     })
+    try{
+      var userFromLocal=JSON.parse(localStorage.getItem('user-info'))
+      var apiLinkForUpdateHistory="http://127.0.0.1:8000/api/history/set/user/"+userFromLocal.id+"/chapter/"+chapterID;
+      fetch(apiLinkForUpdateHistory, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    }catch(e){
+
+    }
     router.push(chapterLink);
   };
   

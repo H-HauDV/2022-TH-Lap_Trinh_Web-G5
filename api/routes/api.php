@@ -6,6 +6,8 @@ use App\Http\Controllers\MangaController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HistoryController;
+
 
 use App\Http\Controllers\PhotoController;
 
@@ -53,9 +55,12 @@ Route::post('/user/register', [UserController::class, 'register']);
 Route::get('/user/checkEmailDuplication/{email}', [UserController::class, 'checkUserEmailExistance']);
 
 Route::get('/user/getInfoByID/basic/{id}', [UserController::class, 'getBasicInfoFromID']);
+Route::put('/user/setInfoByRequest/changeable/', [UserController::class, 'updateUserInfor']);
 
 Route::get('/user/getInfoByID/advanced/{id}', [UserController::class, 'getAdvancedInfoFromID']);
 Route::get('/user/getInfoByID/changeable/{id}', [UserController::class, 'getChangeableInfoFromID']);
 
 Route::put('/chapter/update/view/{id}', [MangaController::class, 'updateViewForChapterWithID']);
+
+Route::put('/history/set/user/{userID}/chapter/{chapterID}',[HistoryController::class, 'updateHistory']);
 
