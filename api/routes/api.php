@@ -64,3 +64,5 @@ Route::put('/chapter/update/view/{id}', [MangaController::class, 'updateViewForC
 
 Route::put('/history/set/user/{userID}/chapter/{chapterID}',[HistoryController::class, 'updateHistory']);
 
+Route::post('/user/avatar/store',[FileController::class, 'store']);
+Route::get('/user/history/get/{id}',[UserController::class, 'getUserHistory']);

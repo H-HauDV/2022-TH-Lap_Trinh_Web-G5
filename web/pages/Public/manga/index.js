@@ -284,6 +284,7 @@ function MangaPage() {
                         backgroundColor: "#3f6791",
                         borderColor: "#3f6791",
                       }}
+                      onCLick={FavoriteButtonOnCLick()}
                     >
                       <FontAwesomeIcon icon={faBookmark} />
                       &nbsp; Theo dõi

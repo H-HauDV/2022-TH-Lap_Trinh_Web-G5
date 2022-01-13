@@ -106,8 +106,9 @@ function Navbar() {
             userLogin ?
               <>
                 <Menu.Item style={{ }} key='3'><img width={50} src={userAvatar}/></Menu.Item>
-                <Menu.Item style={{ }} key='4'><Link href="/User/profile" ><a>Profile</a></Link></Menu.Item>
-                <Menu.Item style={{ }} key='5'><div onClick={userLogout}>Logout</div></Menu.Item>
+                <Menu.Item style={{ }} key='4'><Link href="/User/history" ><a>History</a></Link></Menu.Item>
+                <Menu.Item style={{ }} key='5'><Link href="/User/profile" ><a>Profile</a></Link></Menu.Item>
+                <Menu.Item style={{ }} key='6'><div onClick={userLogout}>Logout</div></Menu.Item>
               </>
               :
               <>

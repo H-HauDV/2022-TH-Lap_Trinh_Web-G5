@@ -23,25 +23,25 @@ function userInfoForm(props) {
     };
     axios(options)
       .then(response => {
-        console.log("K_____ res :- ", response);
+        // console.log("K_____ res :- ", response);
       })
       .catch(error => {
-        console.log("K_____ error :- ", error);
+        //console.log("K_____ error :- ", error);
       });
   };
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    //console.log("Failed:", errorInfo);
   };
   const setData = () => {
     
     // while(props.userInfor.id==null){
     //   setLoading(true)
     // }
-    console.log("userInfor:");
-    console.log(props.userInfor);
+    // console.log("userInfor:");
+    // console.log(props.userInfor);
     setUserForm(props.userInfor);
-    console.log("userForm:");
-    console.log(userForm);
+    // console.log("userForm:");
+    // console.log(userForm);
     
   };
 
@@ -83,7 +83,7 @@ function userInfoForm(props) {
         <Select
           placeholder="Select a gender"
           allowClear
-          initialValue={userForm.gender}
+          defaultValue={userForm.gender}
         >
           <Option value="male">male</Option>
           <Option value="female">female</Option>

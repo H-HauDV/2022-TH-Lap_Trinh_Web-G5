@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -59,9 +60,19 @@ class UserController extends Controller
         $user->gender = $request->gender;
         $user->address = $request->location;
         $user->selfDescription = $request->description;
-
         $user->save();
-
-
+    }
+    public function getUserHistory($id)
+    {
+        $userId= $id;
+        return DB::select("SELECT mangas.name as mangaName, 
+        chapter_manga.chapter_count as chapterCount,
+        history.chapter_id as chapterId, 
+        history.read_date as readDate,
+        mangas.main_image as mangaImage,
+        mangas.id as mangaId
+        from history, chapter_manga, mangas 
+        where  chapter_manga.manga_id= mangas.id and history.chapter_id=chapter_manga.chapter_id
+        and history.user_id=$userId ");
     }
 }

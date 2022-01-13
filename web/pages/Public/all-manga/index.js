@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { Menu, Breadcrumb } from "antd";
 import MainLayout from "../../../layouts/MainLayout";
 import axios from "axios";
-import { List, Card, Button, Row, Col, Carousel } from "antd";
+import { List, Card, Button, Row, Col, Space, Radio } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFire, faNewspaper } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
@@ -43,9 +43,21 @@ function AllMangaPage() {
       <MainLayout>
         <Row>
           <Col className="" span={19}>
+            <Space style={{ marginBottom: 16 }}>
+              <Radio.Group>
+                <Button>ASC</Button>
+                <Button>DSC</Button>
+              </Radio.Group>
+                <Button disabled={true}>Sort by</Button>
+              <Radio.Group>
+                <Button>A-Z</Button>
+                <Button>lượt xem</Button>
+                <Button>Mới cập nhật</Button>
+              </Radio.Group>
+            </Space>
             <Card
               className="card-head"
-              title="Moi cap nhat"
+              title="Mới cập nhật"
               bordered={false}
               style={{ backgroundColor: "#343a40", borderRadius: 5 }}
             >
