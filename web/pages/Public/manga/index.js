@@ -120,7 +120,10 @@ function MangaPage() {
     }
     router.push(chapterLink);
   };
-  
+  const favoriteButtonOnCLick = (chapterName) => {
+    
+    
+  };
   const parseUrlQuery = (value) => {
     var urlParams = new URL(value).searchParams;
     return Array.from(urlParams.keys()).reduce((acc, key) => {
@@ -284,7 +287,7 @@ function MangaPage() {
                         backgroundColor: "#3f6791",
                         borderColor: "#3f6791",
                       }}
-                      onCLick={FavoriteButtonOnCLick()}
+                      onCLick={favoriteButtonOnCLick()}
                     >
                       <FontAwesomeIcon icon={faBookmark} />
                       &nbsp; Theo dõi
