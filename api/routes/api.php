@@ -46,7 +46,7 @@ Route::get('/getPrevChapter/{chapterID}', [MangaController::class, 'getPrevChapt
 Route::get('/comments/new', [CommentController::class, 'newest']);
 Route::get('/comments/chapter/{id}', [CommentController::class, 'getCommentOfChapter']);
 Route::get('/comments/manga/{id}', [CommentController::class, 'getCommentOfManga']);
-
+Route::put('/comment/add/',[CommentController::class, 'addNewComment']);
 
 Route::get('/checkManga/name/{mangaName}', [MangaController::class, 'checkMangaName']);
 Route::post('/upload/file/chapters', [FileController::class, 'uploadChapter']);
@@ -66,7 +66,9 @@ Route::put('/history/set/user/{userID}/chapter/{chapterID}',[HistoryController::
 
 Route::post('/user/avatar/store',[FileController::class, 'store']);
 Route::get('/user/history/get/{id}',[UserController::class, 'getUserHistory']);
+
 Route::put('/user/favorite/add/user/{userId}/manga/{mangaId}',[UserController::class, 'addFavoriteToUser']);
 Route::get('/user/favorite/get/user/{userId}/manga/{mangaId}',[UserController::class, 'isMangaAlreadyIsFavorite']);
 Route::get('/user/favorite/get-all/user/{userId}',[UserController::class, 'getUserFavorite']);
 Route::put('/user/favorite/delete/user/{userId}/manga/{mangaId}',[UserController::class, 'deleteFavorite']);
+
