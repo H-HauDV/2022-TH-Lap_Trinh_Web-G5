@@ -75,4 +75,26 @@ class UserController extends Controller
         where  chapter_manga.manga_id= mangas.id and history.chapter_id=chapter_manga.chapter_id
         and history.user_id=$userId ");
     }
+    public function addFavoriteToUser($userId, $mangaId){
+        $values = array('user_id' => $userId,'manga_id' => $mangaId);   
+        DB::table('favorite')->insert($values);
+    }
+    public function isMangaAlreadyIsFavorite($userId, $mangaId){
+        $isExist= DB::select("SELECT * from favorite where user_id=$userId and manga_id=$mangaId");
+        if (sizeof($isExist)==0){
+            return 0;
+        }
+        return 1;
+    }
+    public function getUserFavorite($userId){
+        $userFavorite= DB::select("SELECT favorite.manga_id as mangaId, mangas.main_image as mangaImage, mangas.name as mangaName
+        from favorite, mangas
+        where favorite.manga_id=mangas.id
+        and user_id=$userId");
+        return $userFavorite;
+    }
+    public function deleteFavorite($userId,$mangaId){
+        $delete=DB::table('favorite')->where([["user_id", $userId],["manga_id",$mangaId]])->get();
+        return $delete;
+    }
 }

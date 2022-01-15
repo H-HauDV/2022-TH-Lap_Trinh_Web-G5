@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import MainLayout from "../../../layouts/MainLayout";
-import dynamic from 'next/dynamic'
-import Loading from "../../../components/loading"
-const MangaComments = dynamic(() => import('../../../components/comments/manga'))
+import dynamic from "next/dynamic";
+import Loading from "../../../components/loading";
+const MangaComments = dynamic(() =>
+  import("../../../components/comments/manga")
+);
 import {
   List,
   Card,
@@ -29,12 +31,14 @@ import {
   faEye,
   faBookmark,
   faPaperPlane,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 const { Meta } = Card;
 
 function MangaPage() {
   const [manga, setManga] = React.useState([]);
+  const [favoriteStatus, setFavoriteStatus] = React.useState([]);
   const [tags, setTag] = React.useState([]);
   const [viewCount, setViewCount] = React.useState([]);
   const [comments, setComment] = React.useState([]);
@@ -90,39 +94,63 @@ function MangaPage() {
     return moment.utc(date).local().startOf("seconds").fromNow();
   };
   const openChapterPage = (chapterName) => {
-    
     //console.log("getting");
     var chapterID = 0;
     chapter.map((aChapter) => {
-      if (aChapter.chapter_name == chapterName)
-        chapterID=aChapter.chapter_id; 
+      if (aChapter.chapter_name == chapterName) chapterID = aChapter.chapter_id;
     });
     var chapterLink = "/Public/chapter?id=" + chapterID;
-    var apiLinkForUpdateView ="http://127.0.0.1:8000/api/chapter/update/view/" +chapterID;
+    var apiLinkForUpdateView =
+      "http://127.0.0.1:8000/api/chapter/update/view/" + chapterID;
     //console.log(apiLinkForUpdateView)
     fetch(apiLinkForUpdateView, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    })
-    try{
-      var userFromLocal=JSON.parse(localStorage.getItem('user-info'))
-      var apiLinkForUpdateHistory="http://127.0.0.1:8000/api/history/set/user/"+userFromLocal.id+"/chapter/"+chapterID;
+    });
+    try {
+      var userFromLocal = JSON.parse(localStorage.getItem("user-info"));
+      var apiLinkForUpdateHistory =
+        "http://127.0.0.1:8000/api/history/set/user/" +
+        userFromLocal.id +
+        "/chapter/" +
+        chapterID;
       fetch(apiLinkForUpdateHistory, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      })
-    }catch(e){
-
-    }
+      });
+    } catch (e) {}
     router.push(chapterLink);
   };
-  const favoriteButtonOnCLick = (chapterName) => {
-    
-    
+  const favoriteButtonOnCLick = (e) => {
+    console.log("clicked");
+    e.preventDefault();
+
+    if (favoriteStatus == 0) {
+      try {
+        var userFromLocal = JSON.parse(localStorage.getItem("user-info"));
+        var apiLinkForAddToFavorite =
+          "http://127.0.0.1:8000/api/user/favorite/add/user/" +
+          userFromLocal.id +
+          "/manga/" +
+          manga.id;
+        fetch(apiLinkForAddToFavorite, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setFavoriteStatus(1);
+      } catch (e) {}
+    } else {
+      //Show noftification
+    }
+  };
+  const readLasestButtonOnClick = (e) => {
+    console.log("adddddddd");
   };
   const parseUrlQuery = (value) => {
     var urlParams = new URL(value).searchParams;
@@ -131,13 +159,21 @@ function MangaPage() {
       return acc;
     }, {});
   };
-
+  
   useEffect(() => {
     const fetchData = async () => {
+      var userFromLocal = JSON.parse(localStorage.getItem("user-info"));
       const querries = parseUrlQuery(window.location);
+      var apiLinkForCheckFavoriteStatus =
+        "http://127.0.0.1:8000/api/user/favorite/get/user/" +
+        userFromLocal.id +
+        "/manga/" +
+        querries.id[0];
       var apiLinkForManga =
-        "http://127.0.0.1:8000/api/manga/get/mangaInfor/fromID/" + querries.id[0];
-      var apiLinkForTag = "http://127.0.0.1:8000/api/mangaTags/" + querries.id[0];
+        "http://127.0.0.1:8000/api/manga/get/mangaInfor/fromID/" +
+        querries.id[0];
+      var apiLinkForTag =
+        "http://127.0.0.1:8000/api/mangaTags/" + querries.id[0];
       var apiLinkForViewCount =
         "http://127.0.0.1:8000/api/mangaViewCount/" + querries.id[0];
       var apiLinkForChapters =
@@ -158,19 +194,23 @@ function MangaPage() {
         //console.log(response4.data);
         setChapter(response4.data);
       });
+      axios.get(apiLinkForCheckFavoriteStatus).then((response5) => {
+        console.log(response5.data);
+        setFavoriteStatus(response5.data);
+      });
     };
     const getNewComments = async () => {
       axios.get("http://127.0.0.1:8000/api/comments/new").then((response) => {
         // console.log(response.data);
         setComment(response.data);
-        setLoading(false)
+        setLoading(false);
       });
     };
     fetchData();
     getNewComments();
   }, []);
   if (loading) {
-    return <Loading></Loading>
+    return <Loading></Loading>;
   }
   return (
     <div id="MainContent">
@@ -195,9 +235,7 @@ function MangaPage() {
                 <Rate disabled defaultValue={2} />
               </Col>
               <Col className="" span={14} offset={2}>
-                <h2 className="text-white">
-                  {manga.name}
-                </h2>
+                <h2 className="text-white">{manga.name}</h2>
                 <div
                   className="same-row text-white"
                   style={{ marginBottom: 10 }}
@@ -280,28 +318,43 @@ function MangaPage() {
                   <h4 className="text-white">{viewCount} </h4>
                 </div>
                 <div style={{ marginBottom: 15 }}>
-                  <Tooltip title="Follow">
+                  <Tooltip
+                    title={
+                      favoriteStatus
+                        ? "Đã trong danh sách yêu thích"
+                        : "Thêm vào danh sách yêu thích"
+                    }
+                  >
                     <Button
                       type="primary"
                       style={{
                         backgroundColor: "#3f6791",
                         borderColor: "#3f6791",
                       }}
-                      onCLick={favoriteButtonOnCLick()}
+                      onClick={favoriteButtonOnCLick}
                     >
                       <FontAwesomeIcon icon={faBookmark} />
                       &nbsp; Theo dõi
+                      {favoriteStatus ? (
+                        <>
+                          &nbsp;&nbsp;
+                          <FontAwesomeIcon icon={faCheck} />
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </Button>
                   </Tooltip>
                 </div>
                 <div>
-                  <Tooltip title="Latest">
+                  <Tooltip title="">
                     <Button
                       type="primary"
                       style={{
                         backgroundColor: "#e12e1c",
                         borderColor: "#e12e1c",
                       }}
+                      onClick={readLasestButtonOnClick}
                     >
                       <FontAwesomeIcon icon={faPaperPlane} />
                       &nbsp; Đọc mới nhất

@@ -76,6 +76,6 @@
     cursor: pointer; /* Add a pointer on hover */
   }
   
-  .ant-spin-spinning {
+.ant-spin-spinning {
     position: absolute !important;
-  }
+}

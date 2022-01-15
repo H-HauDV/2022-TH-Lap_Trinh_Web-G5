@@ -66,3 +66,9 @@ Route::put('/history/set/user/{userID}/chapter/{chapterID}',[HistoryController::
 
 Route::post('/user/avatar/store',[FileController::class, 'store']);
 Route::get('/user/history/get/{id}',[UserController::class, 'getUserHistory']);
+
+Route::put('/user/favorite/add/user/{userId}/manga/{mangaId}',[UserController::class, 'addFavoriteToUser']);
+Route::get('/user/favorite/get/user/{userId}/manga/{mangaId}',[UserController::class, 'isMangaAlreadyIsFavorite']);
+Route::get('/user/favorite/get-all/user/{userId}',[UserController::class, 'getUserFavorite']);
+Route::put('/user/favorite/delete/user/{userId}/manga/{mangaId}',[UserController::class, 'deleteFavorite']);
+
