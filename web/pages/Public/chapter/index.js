@@ -23,8 +23,20 @@ import {
   Divider,
 } from "antd";
 import { useRouter } from "next/router";
-
+const { TextArea } = Input;
 const { Meta } = Card;
+const Editor = ({ onCommentChange, onCommentSubmit, value }) => (
+  <>
+    <Form.Item>
+      <TextArea rows={4} onChange={onCommentChange} value={value} />
+    </Form.Item>
+    <Form.Item>
+      <Button htmlType="submit" loading={false} onClick={onCommentSubmit} type="primary">
+        Add Comment
+      </Button>
+    </Form.Item>
+  </>
+);
 function ChapterPage() {
   const router = useRouter();
   const [image, setImage] = React.useState([]);
@@ -35,6 +47,7 @@ function ChapterPage() {
   const [nextChapter, setNextChapter] = useState();
   const [prevChapter, setPrevChapter] = useState();
   const [manga, setManga] = useState();
+  const [newComment, setNewComment] = React.useState([]);
 
   const fetchImage = async () => {
     const querries = parseUrlQuery(window.location);
@@ -109,6 +122,27 @@ function ChapterPage() {
     console.log(prevChapter);
     console.log(nextChapter);
   }
+  const handleCommentChange = (e) => {
+    setNewComment(e.target.value,);
+  };
+  const handleCommentSubmit = (e) => {
+    var userFromLocal=JSON.parse(localStorage.getItem('user-info'))
+    const querries = parseUrlQuery(window.location);
+    console.log(newComment);
+    axios.put('http://127.0.0.1:8000/api/comment/add/', {
+      user_id: userFromLocal.id,
+      content: newComment,
+      chapter_id:querries.id[0]
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    
+  };
+
   useEffect(() => {
     fetchImage();
     getPrevNextChapter();
@@ -168,6 +202,12 @@ function ChapterPage() {
               bordered={false}
               style={{ backgroundColor: "#343a40", borderRadius: 5 }}
             >
+              <Editor
+                onCommentChange={handleCommentChange}
+
+                onCommentSubmit={handleCommentSubmit}
+                value={newComment}
+               />
               <List
                 itemLayout="horizontal"
                 dataSource={comments}

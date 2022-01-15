@@ -46,7 +46,7 @@ Route::get('/getPrevChapter/{chapterID}', [MangaController::class, 'getPrevChapt
 Route::get('/comments/new', [CommentController::class, 'newest']);
 Route::get('/comments/chapter/{id}', [CommentController::class, 'getCommentOfChapter']);
 Route::get('/comments/manga/{id}', [CommentController::class, 'getCommentOfManga']);
-
+Route::put('/comment/add/',[CommentController::class, 'addNewComment']);
 
 Route::get('/checkManga/name/{mangaName}', [MangaController::class, 'checkMangaName']);
 Route::post('/upload/file/chapters', [FileController::class, 'uploadChapter']);

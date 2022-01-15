@@ -25,5 +25,10 @@ class CommentController extends Controller
         and chapter_manga.manga_id=$mangaID
         ORDER BY comment.created_at ASC");
     }
+    public function addNewComment(Request $request){
+        $values = array('chapter_id' => $request->chapter_id,'user_id' => $request->user_id, 'content'=> $request->content);
+        $import =DB::table('comment')->insert($values);
+        return $import;
+    }
 }
 
