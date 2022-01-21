@@ -151,7 +151,11 @@ function MangaPage() {
     }
   };
   const readLasestButtonOnClick = (e) => {
-    console.log("adddddddd");
+    console.log(chapter[chapter.length-1]);
+    console.log(chapter[chapter.length-1].chapter_name);
+    openChapterPage(chapter[chapter.length-1].chapter_name)
+
+
   };
   const parseUrlQuery = (value) => {
     var urlParams = new URL(value).searchParams;
