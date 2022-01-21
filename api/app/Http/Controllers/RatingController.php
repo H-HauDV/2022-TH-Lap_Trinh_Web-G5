@@ -31,6 +31,10 @@ class RatingController extends Controller
         }
         return response()->json(['message' =>  "Faild!"],  400);
     }
+    public function getRatePointOfManga($mangaID){
+        $mangaRate=DB::select("SELECT AVG(rate) as avg_rate FROM rating where manga_id=$mangaID");
+        return $mangaRate[0]->avg_rate;
+    }
     
 }
 

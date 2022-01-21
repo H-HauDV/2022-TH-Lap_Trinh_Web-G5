@@ -44,6 +44,7 @@ function MangaPage() {
   const [comments, setComment] = React.useState([]);
   const [chapter, setChapter] = React.useState([]);
   const [loading, setLoading] = useState(true);
+  const [avgRate, setAvgRate] = useState();
   const router = useRouter();
   const columns = [
     {
@@ -159,7 +160,15 @@ function MangaPage() {
       return acc;
     }, {});
   };
-  
+  const getRatePoint = async () => {
+    const querries = parseUrlQuery(window.location);
+    var apiLinkForRatePoint =
+      "http://127.0.0.1:8000/api/manga/rating/get/" + querries.id[0];
+    axios.get(apiLinkForRatePoint).then((response) => {
+      // console.log(response.data);
+      setAvgRate(Math.round(response.data * 10) / 10);
+    });
+  };
   useEffect(() => {
     const fetchData = async () => {
       var userFromLocal = JSON.parse(localStorage.getItem("user-info"));
@@ -208,6 +217,7 @@ function MangaPage() {
     };
     fetchData();
     getNewComments();
+    getRatePoint();
   }, []);
   if (loading) {
     return <Loading></Loading>;
@@ -231,7 +241,9 @@ function MangaPage() {
                   style={{ width: 240 }}
                   src={manga.main_image}
                 />
-                <h3 className="text-white">Rating</h3>
+                <h3 className="text-white">
+                  <p style={{ fontSize: 24, textAlign: "center" }}>Rating {avgRate}/ 5</p>
+                </h3>
                 <Rate disabled defaultValue={2} />
               </Col>
               <Col className="" span={14} offset={2}>

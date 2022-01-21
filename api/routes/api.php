@@ -73,3 +73,4 @@ Route::get('/user/favorite/get-all/user/{userId}',[UserController::class, 'getUs
 Route::put('/user/favorite/delete/user/{userId}/manga/{mangaId}',[UserController::class, 'deleteFavorite']);
 
 Route::put('/user/rating/add/',[RatingController::class, 'receiveRating']);
+Route::get('/manga/rating/get/{mangaId}',[RatingController::class, 'getRatePointOfManga']);
