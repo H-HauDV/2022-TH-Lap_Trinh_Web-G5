@@ -7,7 +7,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HistoryController;
-
+use App\Http\Controllers\RatingController;
 
 use App\Http\Controllers\PhotoController;
 
@@ -72,3 +72,4 @@ Route::get('/user/favorite/get/user/{userId}/manga/{mangaId}',[UserController::c
 Route::get('/user/favorite/get-all/user/{userId}',[UserController::class, 'getUserFavorite']);
 Route::put('/user/favorite/delete/user/{userId}/manga/{mangaId}',[UserController::class, 'deleteFavorite']);
 
+Route::put('/user/rating/add/',[RatingController::class, 'receiveRating']);

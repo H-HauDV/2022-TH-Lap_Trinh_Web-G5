@@ -139,8 +139,7 @@ function ChapterPage() {
     })
     .catch(function (error) {
       console.log(error);
-    });
-    
+    });    
   };
 
   useEffect(() => {

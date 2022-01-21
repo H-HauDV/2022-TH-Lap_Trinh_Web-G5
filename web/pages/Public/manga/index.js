@@ -370,7 +370,7 @@ function MangaPage() {
             </Row>
             <Card
               className="card-head"
-              title="Danh sach chuong"
+              title="Danh sách chương"
               bordered={false}
               style={{ backgroundColor: "#343a40", borderRadius: 5 }}
             >
