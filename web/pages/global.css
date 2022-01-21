@@ -22,9 +22,9 @@
 .text-white .ant-table-cell a{
     color: #fff;
 }
-.table-black .ant-table-row:hover {
-    color: black;
+.table-black .ant-table-tbody > tr.ant-table-row:hover > td, .ant-table-tbody > tr > td.ant-table-cell-row-hover{
     background: #6c757d;
+    border: 1px solid rgba(#fff, 0);
 }
 .text-white .ant-form-item-required{
     color: #fff;

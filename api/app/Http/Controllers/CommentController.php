@@ -30,5 +30,7 @@ class CommentController extends Controller
         $import =DB::table('comment')->insert($values);
         return $import;
     }
+
+    
 }
 
