@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import axios, { post } from 'axios';
+import axios, { post } from "axios";
 import UserLayout from "../../../layouts/UserLayout";
 import UserInfoForm from "../../../components/form/user/changeInfor";
 import UserPasswordForm from "../../../components/form/user/changePassword";
@@ -94,7 +94,7 @@ function UserProfilePage() {
   // }
   // function handleUploadAvatar(e) {
   //   const url = "/api/files";
-    
+
   //   const formData = new FormData();
   //   formData.append("file", e.target);
   //   const config = {
@@ -112,22 +112,22 @@ function UserProfilePage() {
 
       setImage(i);
       setCreateObjectURL(URL.createObjectURL(i));
-      console.log(image)
+      console.log(image);
     }
   };
   const uploadToServer = async (event) => {
     var data = new FormData();
     data.append("file", image);
     const config = {
-      method: 'POST',
+      method: "POST",
       headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
-    }
-    const response = await fetch("/api/file", config)
-    console.log(response)
+      body: JSON.stringify(data),
+    };
+    const response = await fetch("/api/file", config);
+    console.log(response);
   };
 
   useEffect(() => {
@@ -153,20 +153,17 @@ function UserProfilePage() {
                 style={{ width: "100%" }}
                 cover={<img alt="example" src="/user_default/cover.jpg" />}
               >
-                <Input
-                  name="myImage" onChange={uploadToClient}
-                  hidden={false}
-                  id="uploadAvatar"
-                  type="file"
-                />
-                <Button
-                  className="btn btn-primary"
-                  type="submit"
-                  onClick={uploadToServer}
-                >Upload</Button>
                 <Meta
                   //onClick={handleUploadButtonClick}
-                  avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+                  avatar={
+                    <Avatar
+                      src={
+                        user.avatar == null
+                          ? "https://joeschmoe.io/api/v1/random"
+                          : user.avatar
+                      }
+                    />
+                  }
                   title={user.name == null ? "Not updated" : user.name}
                   description={user.email}
                 />

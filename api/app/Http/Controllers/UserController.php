@@ -58,6 +58,7 @@ class UserController extends Controller
         $user->name = $request->username;
         $user->fullName = $request->fullname;
         $user->gender = $request->gender;
+        $user->avatar = $request->avatar;
         $user->address = $request->location;
         $user->selfDescription = $request->description;
         $user->save();

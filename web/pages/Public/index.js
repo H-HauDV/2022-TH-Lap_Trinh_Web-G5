@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import MainLayout from "../../layouts/MainLayout";
+import AllComments from "../../components/comments/all"
 
 import { List, Card, Avatar, Row, Col, Carousel, Tag, Space } from "antd";
 
@@ -218,38 +219,7 @@ function HomePage() {
           <Col className="" span={8} offset={1}>
             <Row style={{ paddingBottom: 20 }} className="">
               <Col className="" span={24}>
-                <Card
-                  className="card-head"
-                  title="Comment"
-                  bordered={false}
-                  style={{ backgroundColor: "#343a40", borderRadius: 5 }}
-                >
-                  <List
-                    itemLayout="horizontal"
-                    dataSource={comments}
-                    renderItem={(comment) => (
-                      <List.Item>
-                        <List.Item.Meta
-                          className="text-white"
-                          avatar={
-                            <Avatar src="https://joeschmoe.io/api/v1/random" />
-                          }
-                          title={
-                            <a
-                              style={{ color: "#fff" }}
-                              href="https://ant.design"
-                            >
-                              {comment.user_name}
-                            </a>
-                          }
-                          description={
-                            <p style={{ color: "#fff" }}>{comment.content}</p>
-                          }
-                        />
-                      </List.Item>
-                    )}
-                  />
-                </Card>
+              <AllComments/>
               </Col>
             </Row>
             <Row className="">

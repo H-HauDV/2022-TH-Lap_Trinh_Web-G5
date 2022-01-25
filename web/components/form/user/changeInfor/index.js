@@ -48,7 +48,7 @@ function userInfoForm(props) {
   useEffect(() => {
     setData();
     if(userForm.id!=null)setLoading(false)
-
+    // console.log(userForm)
   }, [props, userForm]);
   if (loading) {
     return <Loading loading={loading} overlay={loading}></Loading>;
@@ -101,6 +101,14 @@ function userInfoForm(props) {
         label="Description"
         name="description"
         initialValue={userForm.selfDescription}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Avatar Link"
+        name="avatar"
+        initialValue={userForm.avatar}
       >
         <Input />
       </Form.Item>

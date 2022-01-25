@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { List, Card, Avatar } from "antd";
+import { List, Card, Avatar, Link } from "antd";
 import { useRouter } from "next/router";
 function AllComments() {
   const [comments, setComment] = React.useState([]);
@@ -14,31 +14,50 @@ function AllComments() {
     getNewComments();
   }, []);
   return (
-    <Card
-      className="card-head"
-      title="Comment"
-      bordered={false}
-      style={{ backgroundColor: "#343a40", borderRadius: 5 }}
-    >
-      <List
-        itemLayout="horizontal"
-        dataSource={comments}
-        renderItem={(comment) => (
-          <List.Item>
-            <List.Item.Meta
-              className="text-white"
-              avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-              title={
-                <a style={{ color: "#fff" }} href="https://ant.design">
-                  {comment.user_name}
-                </a>
-              }
-              description={<p style={{ color: "#fff" }}>{comment.content}</p>}
-            />
-          </List.Item>
-        )}
-      />
-    </Card>
+    <>
+      <Card
+        className="card-head"
+        title="Comment"
+        bordered={false}
+        style={{ backgroundColor: "#343a40", borderRadius: 5 }}
+      >
+        <List
+          itemLayout="horizontal"
+          dataSource={comments}
+          renderItem={(comment) => (
+            <List.Item>
+              <List.Item.Meta
+                className="text-white"
+                avatar={
+                  <Avatar
+                    src={
+                      comment.user_avatar == null
+                        ? "https://joeschmoe.io/api/v1/random"
+                        : comment.user_avatar
+                    }
+                  />
+                }
+                title={
+                  <a style={{ color: "#fff" }} href="https://ant.design">
+                    {comment.user_name}
+                  </a>
+                }
+                description={
+                  <>
+                    <p style={{ color: "#fff" }}>{comment.content}</p>
+                    <a href={"/Public/manga?id="+comment.manga_id}>{comment.manga_name}</a>
+                    <>&nbsp;-&nbsp;</>
+                    <a href={"/Public/chapter?id="+comment.chapter_id} style={{ color: "#e67e22" }}>
+                      Chapter {comment.chapter_name}
+                    </a>
+                  </>
+                }
+              />
+            </List.Item>
+          )}
+        />
+      </Card>
+    </>
   );
 }
 export default AllComments;
