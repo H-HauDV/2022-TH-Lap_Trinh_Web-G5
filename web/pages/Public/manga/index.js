@@ -35,7 +35,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 const { Meta } = Card;
-
+const rateDesc = ["Rất tệ", "Tệ", "Bình thường", "Tốt", "Tuyệt vời"];
 function MangaPage() {
   const [manga, setManga] = React.useState([]);
   const [favoriteStatus, setFavoriteStatus] = React.useState([]);
@@ -45,6 +45,7 @@ function MangaPage() {
   const [chapter, setChapter] = React.useState([]);
   const [loading, setLoading] = useState(true);
   const [avgRate, setAvgRate] = useState();
+  const [userRate, setUserRate] = useState();
   const router = useRouter();
   const columns = [
     {
@@ -151,11 +152,7 @@ function MangaPage() {
     }
   };
   const readLasestButtonOnClick = (e) => {
-    console.log(chapter[chapter.length-1]);
-    console.log(chapter[chapter.length-1].chapter_name);
-    openChapterPage(chapter[chapter.length-1].chapter_name)
-
-
+    openChapterPage(chapter[chapter.length - 1].chapter_name);
   };
   const parseUrlQuery = (value) => {
     var urlParams = new URL(value).searchParams;
@@ -163,6 +160,23 @@ function MangaPage() {
       acc[key] = urlParams.getAll(key);
       return acc;
     }, {});
+  };
+  const handleChangeRateChange = async (value) => {
+    setUserRate(value);
+    // console.log(value)
+    var userFromLocal = JSON.parse(localStorage.getItem("user-info"));
+    var apiLinkForUserRating = "http://127.0.0.1:8000/api/user/rating/add/";
+    fetch(apiLinkForAddToFavorite, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: userFromLocal.id,
+        manga_id: manga.id,
+        rate: value,
+      }),
+    });
   };
   const getRatePoint = async () => {
     const querries = parseUrlQuery(window.location);
@@ -246,9 +260,15 @@ function MangaPage() {
                   src={manga.main_image}
                 />
                 <h3 className="text-white">
-                  <p style={{ fontSize: 24, textAlign: "center" }}>Rating {avgRate}/ 5</p>
+                  <p style={{ fontSize: 24, textAlign: "center" }}>
+                    Rating {avgRate}/ 5
+                  </p>
                 </h3>
-                <Rate disabled defaultValue={2} />
+                <Rate
+                  tooltips={rateDesc}
+                  onChange={handleChangeRateChange}
+                  value={userRate}
+                />
               </Col>
               <Col className="" span={14} offset={2}>
                 <h2 className="text-white">{manga.name}</h2>
