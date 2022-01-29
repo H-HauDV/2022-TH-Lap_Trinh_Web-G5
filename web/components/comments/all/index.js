@@ -45,9 +45,14 @@ function AllComments() {
                 description={
                   <>
                     <p style={{ color: "#fff" }}>{comment.content}</p>
-                    <a href={"/Public/manga?id="+comment.manga_id}>{comment.manga_name}</a>
+                    <a href={"/Public/manga?id=" + comment.manga_id}>
+                      {comment.manga_name}
+                    </a>
                     <>&nbsp;-&nbsp;</>
-                    <a href={"/Public/chapter?id="+comment.chapter_id} style={{ color: "#e67e22" }}>
+                    <a
+                      href={"/Public/chapter?id=" + comment.chapter_id}
+                      style={{ color: "#e67e22" }}
+                    >
                       Chapter {comment.chapter_name}
                     </a>
                   </>

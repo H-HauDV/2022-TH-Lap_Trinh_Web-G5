@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import MainLayout from "../../layouts/MainLayout";
-import AllComments from "../../components/comments/all"
+import AllComments from "../../components/comments/all";
 
 import { List, Card, Avatar, Row, Col, Carousel, Tag, Space } from "antd";
 
@@ -83,7 +83,12 @@ function HomePage() {
           <Col span={24}>
             <Card
               className="card-head"
-              title={<Space><FontAwesomeIcon icon={faFire} />Truyện hot</Space>}
+              title={
+                <Space>
+                  <FontAwesomeIcon icon={faFire} />
+                  Truyện hot
+                </Space>
+              }
               bordered={false}
               style={{ backgroundColor: "#343a40", borderRadius: 5 }}
             >
@@ -172,7 +177,12 @@ function HomePage() {
               <Col className="" span={24}>
                 <Card
                   className="card-head"
-                  title={<Space><FontAwesomeIcon icon={faNewspaper} />Mới cập nhật</Space>}
+                  title={
+                    <Space>
+                      <FontAwesomeIcon icon={faNewspaper} />
+                      Mới cập nhật
+                    </Space>
+                  }
                   bordered={false}
                   style={{ backgroundColor: "#343a40", borderRadius: 5 }}
                 >
@@ -219,7 +229,7 @@ function HomePage() {
           <Col className="" span={8} offset={1}>
             <Row style={{ paddingBottom: 20 }} className="">
               <Col className="" span={24}>
-              <AllComments/>
+                <AllComments />
               </Col>
             </Row>
             <Row className="">
