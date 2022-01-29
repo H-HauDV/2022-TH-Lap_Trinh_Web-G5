@@ -78,7 +78,7 @@ function Navbar() {
         router.push("/Public");
       }
     }else{//Not sign in
-      if(currPath.includes("Profile")){
+      if(currPath.includes("profile") || currPath.includes("history") || currPath.includes("favorite")){
         router.push("/Public");
       }
     }
