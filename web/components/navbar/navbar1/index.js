@@ -69,8 +69,24 @@ function Navbar() {
       router.push(link);
     });
   };
+  const checkAuth=()=>{
+    var userFromLocal = JSON.parse(localStorage.getItem("user-info"));
+    var currPath=window.location.pathname;
+    console.log(userFromLocal)
+    if(userFromLocal!=null){//Signed in
+      if(currPath.includes("login") || currPath.includes("register")){
+        router.push("/Public");
+      }
+    }else{//Not sign in
+      if(currPath.includes("Profile")){
+        router.push("/Public");
+      }
+    }
+    
+  }
   useEffect(() => {
     fetchBasicUserData();
+    checkAuth();
   }, []);
 
   return (
