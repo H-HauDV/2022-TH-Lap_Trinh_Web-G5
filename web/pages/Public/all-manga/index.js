@@ -34,6 +34,12 @@ function AllMangaPage() {
     var link = "/Public/manga?id=" + mangaID;
     router.push(link);
   };
+  const aToZButtonOnChange=()=>{
+    setManga(mangas.sort((a, b) => a.name.localeCompare(b.name)))
+  }
+  useEffect(()=> {
+    
+  }, [mangas]);
   useEffect(() => {
     fetchManga();
     fetchTotalManga();
@@ -50,7 +56,7 @@ function AllMangaPage() {
               </Radio.Group>
                 <Button disabled={true}>Sort by</Button>
               <Radio.Group>
-                <Button>A-Z</Button>
+                <Button onClick={aToZButtonOnChange}>A-Z</Button>
                 <Button>lượt xem</Button>
                 <Button>Mới cập nhật</Button>
               </Radio.Group>
